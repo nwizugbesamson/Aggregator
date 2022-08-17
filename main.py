@@ -1,6 +1,7 @@
 # from Scraper.indeedupdates.update import update_main
 # from database.dbclass import JobDatabase
 from Tests.test_clean_data import CleanDataTest
+from Tests.test_indeedcron import IndeedCronTest
 import unittest
 
 

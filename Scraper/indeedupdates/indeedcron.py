@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
 import re
-COUNTRY_CURRENCY_CONVERSION = {'Canada': 0.7827, 'AUSTRALIA': 0.712665, 'United Kingdom': 1.214175}
+from Scraper.resources.utils import COUNTRY_CURRENCY_CONVERSION 
+
 
 
 
@@ -16,9 +17,9 @@ def salary_to_yearly(value:str):
         """
         if pd.isna(value):
             return value
-        if 'K' in value:
-            return float(value.replace('K', '')) * 1000 
-        if float(value) < 150:
+        if 'k' in value.lower():
+            return float(value.lower().replace('k', '')) * 1000 
+        if float(value) < 200:
             return float(value) * 8 * 260
         if float(value) < 2600:
             return float(value) * 260
@@ -68,7 +69,8 @@ def clean_location(value: str):
         return 'hybrid'
     if 'remote' in value:
         return 'remote'
-    value = re.sub(r'[^\w,]', ' ',value)
+    value = re.sub(r'[^a-zA-Z,]', ' ',value)
+    value = value.replace('locations', '').strip()
     return value
 
 
