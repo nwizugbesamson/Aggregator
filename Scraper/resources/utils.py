@@ -4,11 +4,17 @@ UNDEFINED_LIST = ['$', '£', 'shift', 'Monday to Friday']
 COUNTRY_CURRENCY_CONVERSION = {'Canada': 0.7827, 'AUSTRALIA': 0.712665, 'United Kingdom': 1.214175}
 
 
-PATTERNS = ['product+manager', 'data+scientist', 'marketing+specialist', 'ui+ux+designer', 
-            'software+engineer', 'data+analyst', 'product%20manager', 'data%20scientist', 
-            'marketing%20specialist', 'ui%20ux-designer', 'software%20engineer',  'data%20science', 'data+science'
-            'data%20analyst'
-            ]
+
+
+
+PATTERNS = {
+        'data analyst': ['data%20analyst', 'data+analyst'],
+        'data scientist': ['data%20scientist', 'data+scientist',  'data%20science', 'data+science'],
+        'marketing specialist': ['marketing%20specialist', 'marketing+specialist'],
+        'product manager': ['product+manager', 'product%20manager'],
+        'ui ux designer': ['ui+ux+designer', 'ui%20ux%20designer'],
+        'software engineer': ['software%20engineer', 'software+engineer',]
+}
 
 
 
@@ -36,7 +42,7 @@ START_URLS = [
 
 
         # ## data science
-        'https://au.indeed.com/jobs?q=data%20science&l=Australia',  #done
+        # 'https://au.indeed.com/jobs?q=data%20science&l=Australia',  
         # 'https://uk.indeed.com/jobs?q=data%20scientist&l=United%20Kingdom', 
         # 'https://ca.indeed.com/jobs?q=data%20scientist&l=Canada', 
         # 'https://www.indeed.com/jobs?q=data%20scientist&l=United%20States', 

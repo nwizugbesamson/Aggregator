@@ -1,7 +1,7 @@
 import re
 import numpy as np
 from datetime import datetime, timedelta
-from resources.utils import PATTERNS, UNDEFINED_LIST
+from Scraper.resources.utils import PATTERNS, UNDEFINED_LIST
 
 
 class CleanData:
@@ -10,11 +10,13 @@ class CleanData:
 
     def extract_job_field(self, url: str) -> str:
         """extracts job field from request """
-        for pattern in PATTERNS:
-            if pattern in url:
-                result = pattern.lower().replace('+', ' ').replace('%20', ' ')
-                return result
-        return url
+
+
+        for field in PATTERNS:
+            for pattern in PATTERNS[field]:
+                if pattern in url.lower():
+                    return field
+        
 
 
     def clean_rating(self, value: str) -> float:
