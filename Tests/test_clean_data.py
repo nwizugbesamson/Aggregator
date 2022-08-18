@@ -55,15 +55,15 @@ class CleanDataTest(unittest.TestCase):
 
     def test_clean_post_date(self):
         self.assertEqual(
-            self.clean_data.clean_post_date('Posted 5 days ago'), '2022-08-12'
+            self.clean_data.clean_post_date('Posted 5 days ago'), '2022-08-13'
         )
 
         self.assertEqual(
-            self.clean_data.clean_post_date('Hiring Today'), '2022-08-17'
+            self.clean_data.clean_post_date('Hiring Today'), '2022-08-18'
         )
 
         self.assertEqual(
-            self.clean_data.clean_post_date('Posted 30+ days ago'), '2022-07-18'
+            self.clean_data.clean_post_date('Posted 30+ days ago'), '2022-07-19'
         )
 
     def test_clean_job_description(self):

@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import re
 from Scraper.resources.utils import COUNTRY_CURRENCY_CONVERSION 
 
@@ -73,7 +72,10 @@ def clean_location(value: str):
     value = value.replace('locations', '').strip()
     return value
 
-
+def group_location(value):
+    if value == 'remote' or value == 'hybrid':
+        return value
+    return 'physical location'
 
 def preprocess_data(read_path, write_path):
 
@@ -91,7 +93,7 @@ def preprocess_data(read_path, write_path):
 
     data['clean_location'] = data['non_remote_location'].apply(clean_location)
 
-
+    data['location_group'] = data['clean_location'].apply(group_location)
     ## process date column
     data['post_date'] = pd.to_datetime(data['post_date'].dt.strftime('%Y-%m-%d'))
 

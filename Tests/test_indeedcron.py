@@ -2,7 +2,7 @@ import unittest
 import pandas as pd
 import numpy as np
 from pandas.testing import assert_frame_equal, assert_series_equal
-from Scraper.indeedupdates.indeedcron import salary_to_yearly, curr_to_usd, calculate_avg_salary, clean_location
+from Scraper.indeedupdates.indeedcron import salary_to_yearly, curr_to_usd, calculate_avg_salary, clean_location, group_location
 
 
 class IndeedCronTest(unittest.TestCase):
@@ -51,3 +51,9 @@ class IndeedCronTest(unittest.TestCase):
         expected_data = pd.Series(['hybrid', 'remote', 'remote', 'new york, ny', 'mourville ,mc'])
 
         assert_series_equal(test_data.apply(clean_location), expected_data)
+
+    def test_group_location(self):
+        test_data = pd.Series(['hybrid', 'remote', np.nan, 'Ohio', 'New Castle', 'remote'])
+        expected_result = pd.Series(['hybrid', 'remote', np.nan, 'physical location', 'physical location', 'remote'])
+
+        assert_series_equal(test_data.apply(group_location), expected_result)
