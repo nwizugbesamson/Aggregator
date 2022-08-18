@@ -73,7 +73,7 @@ def clean_location(value: str):
     return value
 
 def group_location(value):
-    if value == 'remote' or value == 'hybrid':
+    if value == 'remote' or value == 'hybrid' or pd.isna(value):
         return value
     return 'physical location'
 
