@@ -1,5 +1,6 @@
 import psycopg2
-from ..creds.creds  import PASSWORD, USER, DATABASE_NAME, HOST, READ_ONLY_USER, PORT, SCHEMA_NAME
+from psycopg2.extensions import AsIs
+from creds.creds  import PASSWORD, USER, DATABASE_NAME, HOST,  PORT, SCHEMA_NAME
 
 class JobDatabase:
     """Setup class for database initialization
@@ -38,8 +39,7 @@ class JobDatabase:
     def create_schema(self, _cursor):
         create_schema = """CREATE SCHEMA %s;
         """
-        _cursor.execute(create_schema, (SCHEMA_NAME,))
-        
+        _cursor.execute(create_schema, (AsIs(SCHEMA_NAME),)),
         
     
 
@@ -80,7 +80,11 @@ class JobDatabase:
                 'internship', 
                 'apprenticeship', 
                 'temporary',
-                'freelance'
+                'freelance',
+                'on call',
+                'weekend availability',
+                'extended hours',
+                'holidays'
             );
         """
 
@@ -118,7 +122,7 @@ class JobDatabase:
                     upper_salary_range_usd  DECIMAL(18, 2)   NULL,
                     average_salary_usd  DECIMAL(18, 2)   NULL,
                     location_group location_group_enum NULL,
-                    day_of_week DECIMAL(1,1) NULL
+                    day_of_week DECIMAL(1,0) NULL
 
                 );
         
@@ -134,7 +138,11 @@ class JobDatabase:
 
     @connect_pg
     def create_read_only_user(self, _cursor, username, password):
-        """Create Read Only User for web service query"""
+        """Create Read Only User for web service query
+        
+        Args:
+            username (str): name of account to be created
+            password (str): account password"""
         create_user = """CREATE USER %s WITH PASSWORD '%s';
                 """
         
@@ -151,45 +159,48 @@ class JobDatabase:
         """
 
         _cursor.execute(create_user, (username, password))
-        _cursor.execute(allow_connection, (DATABASE_NAME, username))
-        _cursor.execute(allow_schema_usage, (SCHEMA_NAME, username))
-        _cursor.execute(allow_all_tables_select, (SCHEMA_NAME, username))
-        _cursor.execute(change_default_access, (SCHEMA_NAME, username))
+        _cursor.execute(allow_connection, (AsIs(DATABASE_NAME), AsIs(username)))
+        _cursor.execute(allow_schema_usage, (AsIs(SCHEMA_NAME), AsIs(username)))
+        _cursor.execute(allow_all_tables_select, (AsIs(SCHEMA_NAME), AsIs(username)))
+        _cursor.execute(change_default_access, (AsIs(SCHEMA_NAME), AsIs(username)))
 
 
 
 
 
 
+## this class is unnecessary
+# class ReadOnlyDataBase:
 
-class ReadOnlyDataBase:
-
-    def __init__(self, username, password):
-        self.username:str = username
-        self.password:str = password
+#     def __init__(self, username, password):
+#         self.username:str = username
+#         self.password:str = password
 
 
-    def connect_pg(self, func):
-            def inner_func(*args, **kwargs):
-                self: ReadOnlyDataBase = args[0]
-                with psycopg2.connect(user=self.username, password=self.password, host=HOST, port=PORT, database=DATABASE_NAME) as conn:
-                    cursor = conn.cursor()
-                    func(*(args), cursor=cursor, **(kwargs))
-                    conn.commit()
-            return inner_func
+#     def connect_pg(func):
+#             def inner_func(*args, **kwargs):
+#                 self: ReadOnlyDataBase = args[0]
+#                 with psycopg2.connect(user=self.username, password=self.password, host=HOST, port=PORT, database=DATABASE_NAME) as conn:
+#                     cursor = conn.cursor()
+#                     func(*(args), cursor=cursor, **(kwargs))
+#                     conn.commit()
+#             return inner_func
 
-    @connect_pg
-    def execute_query(self, query,  cursor, inserts=None):
-        """execute and return result of select query on database 
+#     @connect_pg
+#     def execute_query(self, query,  cursor, inserts=None):
+#         """execute and return result of select query on database 
 
-        Args:
-            query (str): postgresql query to execute
-            cursor (psycopg2.cursor): psycopg2 cursor object
-            inserts (tuple || dict, optional): values to insert into query. Defaults to None.
-        """
-        if inserts is not None:
-            cursor.execute(query, inserts)
-        else:
-            cursor.execute(query)
+#         Args:
+#             query (str): postgresql query to execute
+#             cursor (psycopg2.cursor): psycopg2 cursor object
+#             inserts (tuple || dict, optional): values to insert into query. Defaults to None.
 
-        return cursor.fetchall()
+#         Returns:
+#             query_result (list[tuple]): result from query
+#         """
+#         if inserts is not None:
+#             cursor.execute(query, inserts)
+#         else:
+#             cursor.execute(query)
+
+#         return cursor.fetchall()
