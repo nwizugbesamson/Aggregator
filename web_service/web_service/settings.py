@@ -16,7 +16,10 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(PROJECT_DIR)
+print(os.path.join(PROJECT_DIR, 'templates'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -30,6 +33,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# ENABLE FRAMES WITHIN HTML FOR DJANGO-PLOTLY-DASH
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
 
 # Application definition
 
@@ -41,7 +47,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    'channels',
+    'channels_redis',
+    
 ]
+
+
+## CHANNELS LAYER FOR CHANNELS PACKAGE(INSTALLED FOR DASH_PLOTLY FUNCTIONALITY)
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379),],
+        },
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -58,7 +79,7 @@ ROOT_URLCONF = 'web_service.web_service.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(PROJECT_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,15 +147,49 @@ USE_I18N = True
 USE_TZ = True
 
 
+## CRISPY TEMPLATE PACK FOR DASH_PLOTLY BOOTSTRAP
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+## ROUTING SETTINGD
+ASGI_APPLICATION = 'web_service.web_service.routing.application'
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATICFILES_LOCATION = 'static'
-STATIC_URL = 'static/'
-STATIC_ROOT = 'static'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'web_service/static')
+
+
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django_plotly_app.finders.DashAssetFinder',
+    'django_plotly_app.finders.DashComponentFinder',
+
 ]
+
+## PLOTY COMPONENT SETTINGS
+PLOTLY_COMPONENTS = [
+    'dash_core_components',
+    'dash_html_components',
+    'dash_renderer',
+
+    'dpd_components'
+]
+
+
+
+STATICFILES_DIRS = [os.path.join(PROJECT_DIR, 'static'),]
+BASE_DIR = os.path.dirname(PROJECT_DIR)
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
+# STATICFILES_LOCATION = 'web_service/static'
+# STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles-cdn')     #prod collect static
+# # STATIC_ROOT = 'web_service/static'  #dev collect static
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static')
+# ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

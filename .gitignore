@@ -3,7 +3,8 @@
 
 ## credentials
 creds.py/
-
+staticfiles-cdn/
+Tests/
 
 ## pycache
 __pycache__/
