@@ -2,8 +2,7 @@ from dash import Dash, html, dcc
 import pandas as pd
 from eda_aplications.src.data.loader import DataSchema
 from eda_aplications.src.personalised_components import p_ids
-from dash.dependencies import Input, Output
-# from eda_aplications.src.resources import COUNTRIES
+
 
 
 
