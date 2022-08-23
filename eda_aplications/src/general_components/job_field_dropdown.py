@@ -6,7 +6,7 @@ from eda_aplications.src.general_components import ids
 
 
 
-def render(app: Dash, data: pd.DataFame) -> html.Div:
+def render(app: Dash, data: pd.DataFrame) -> html.Div:
     all_fields = list(data[DataSchema.JOB_FIELD].unique())
 
     @app.callback(

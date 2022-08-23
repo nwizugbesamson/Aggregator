@@ -6,7 +6,7 @@ from eda_aplications.src.personalised_components import p_ids
 
 
 
-def render(app: Dash, data: pd.DataFrame) -> html.Div:
+def render( data: pd.DataFrame) -> html.Div:
     all_countries = list(data[DataSchema.COUNTRY].unique())
     return html.Div(
         className= '',  # class name to apply style

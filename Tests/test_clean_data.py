@@ -105,5 +105,7 @@ class CleanDataTest(unittest.TestCase):
         self.assertEqual(
             self.clean_data.clean_job_type(job_types[5]), 'temporary'
         )
+# TODO 1. TEST CLEAN LOCATION
+
 if __name__ == "__main__":
     unittest.main()

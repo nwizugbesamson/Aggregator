@@ -15,7 +15,7 @@ def create_general_layout(app: Dash, data: pd.DataFrame) ->  html.Div:
     return html.Div(
         className='',   # class name to add styling
         children=[
-            html.H1('Insights'),    #change this heading
+            html.H1('Summary Statistics'),    
             html.Div(
                 className= '',   #for styling
                 children=[
