@@ -1,0 +1,10 @@
+COUNTRIES_DROPDOWN = 'countries-dropdown'
+SELECT_ALL_COUNTRIES_BUTTON = 'select-all-countries-button'
+JOB_FIELD_DROPDOWN = 'jobField-dropdown'
+SELECT_ALL_JOB_FIELDS = 'select-all-jobFields-button'
+
+GENERAL_JOB_OFFERS = 'general-job_offers'
+GENERAL_SALARIES = 'general-salaries'
+GENERAL_LOCATION = 'general-location'
+GENERAL_JOB_TYPE = 'general-job-type'
+GENERAL_RATING = 'general-rating'
