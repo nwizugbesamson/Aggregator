@@ -8,5 +8,5 @@ def dash_main() -> None:
     data = load_data()
     app = Dash()
     app.title = "Job Aggregator"
-    app.layout = create_personalised_layout(app, data)
+    app.layout = create_general_layout(app, data)
     app.run()

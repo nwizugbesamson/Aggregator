@@ -19,7 +19,7 @@ from pathlib import Path
 # BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
-print(os.path.join(PROJECT_DIR, 'templates'))
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'channels_redis',
     
 ]
+
 
 
 ## CHANNELS LAYER FOR CHANNELS PACKAGE(INSTALLED FOR DASH_PLOTLY FUNCTIONALITY)
@@ -163,8 +164,8 @@ ASGI_APPLICATION = 'web_service.web_service.routing.application'
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'django_plotly_app.finders.DashAssetFinder',
-    'django_plotly_app.finders.DashComponentFinder',
+    'django_plotly_dash.finders.DashAssetFinder',
+    'django_plotly_dash.finders.DashComponentFinder',
 
 ]
 

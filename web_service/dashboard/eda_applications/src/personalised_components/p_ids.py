@@ -1,0 +1,7 @@
+P_COUNTRIES_DROPDOWN = 'p-countries-dropdown'
+P_JOB_FIELD_DROPDOWN = 'p-job-field-dropdown'
+P_TOP_LOCATIONS = 'p-top-locations'
+P_TOP_COMPANIES = 'p-top-companies'
+P_RATING = 'p-ratings'
+P_SALARY = 'p-salary'
+P_DESCRIPTION = 'p-description'

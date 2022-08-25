@@ -1,6 +1,7 @@
-from dash import Dash, html
+from dash import html
+from django_plotly_dash import DjangoDash
 import pandas as pd
-from eda_aplications.src.general_components import (
+from web_service.dashboard.eda_applications.src.general_components import (
     country_dropdown, 
     job_field_dropdown, 
     general_job_count, 
@@ -11,11 +12,11 @@ from eda_aplications.src.general_components import (
     )
 
 
-def create_general_layout(app: Dash, data: pd.DataFrame) ->  html.Div:
+def create_general_layout(app: DjangoDash, data: pd.DataFrame) ->  html.Div:
     return html.Div(
         className='',   # class name to add styling
         children=[
-            html.H1('Summary Statistics'),    
+              
             html.Div(
                 className= '',   #for styling
                 children=[

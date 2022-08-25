@@ -3,7 +3,9 @@
 
 
 {% block content %}
-
-    <h1>Samson</h1>
+{% load plotly_dash %}
+    <div class="{% plotly_class name='general_dashboard' %} card">
+        {% plotly_app name='general_dashboard' ratio=0.65%}
+    </div>
 
 {% endblock content%}

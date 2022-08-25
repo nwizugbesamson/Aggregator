@@ -17,7 +17,7 @@ if __name__ == '__main__':
     # db.create_indeedjobs_table()
     # db.create_read_only_user(READ_ONLY_USER, READ_ONLY_USER)
     # db.insert_indeedjobs('data/eda_cleaned.csv')
-    # manage.main()
-    dash_main()
+    manage.main()
+    # dash_main()
 
 
