@@ -24,14 +24,14 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
             # dataframe  = data.query(f'{DataSchema.COUNTRY} == selected_country & {DataSchema.JOB_FIELD} == selected_job_field')
             dataframe  = data[(data[DataSchema.COUNTRY] == selected_country) & (data[DataSchema.JOB_FIELD] == selected_job_field)]
             if dataframe.shape[0] == 0:
-                return html.Div('Select Country And Job Field.')
+                return html.Div('')
         rate_fig = px.histogram(dataframe, x='rating', template='simple_white', nbins=12, 
                                labels = {
-                                'count': 'Amount',
+                                'count': '',
                                 'rating': 'Rating'
                                })
         rate_fig.update_layout(template='simple_white', 
-                               title=f'Ratings Given By Staff within {selected_country}  in the {selected_job_field} field'
+                               title=f'Staff Ratings of Companies'
                                
                                )
         

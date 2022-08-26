@@ -32,8 +32,10 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
                                     'job_type': 'Employment Offer Category'
                                 },
                                 log_y=True,
-                                title='Categories of Employment offers In Countries Selected')
-
+                                title='Categories of Employment offers')
+        job_type_figure.update_layout(legend=dict(
+                                x=1.02
+                            ), legend_title='')
         return html.Div(
             dcc.Graph(          
                     figure=job_type_figure

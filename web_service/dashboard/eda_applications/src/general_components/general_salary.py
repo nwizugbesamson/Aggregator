@@ -29,11 +29,12 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
                         template='simple_white',
                          labels={
                                     DataSchema.COUNTRY: "Country",
-                                    DataSchema.SALARY: "Average Salary (USD)",
+                                    'average_salary_usd': "Average Salary (USD)",
                                     DataSchema.JOB_FIELD: "Job Fields"
                                 },
                         title="Average Salaries"
                         )
+        salaries_figure.update_layout(showlegend=False)
 
         return html.Div(
             dcc.Graph(          

@@ -5,7 +5,9 @@
 {% block content %}
 {% load plotly_dash %}
     <div class="{% plotly_class name='personalised_dashboard' %} card">
-        {% plotly_app name='personalised_dashboard' ratio=0.65%}
+        {%plotly_header %}
+        {% plotly_direct name='personalised_dashboard' %}
+        {%plotly_footer %}
     </div>
 
 {% endblock content%}

@@ -73,6 +73,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_plotly_dash.middleware.BaseMiddleware',
 ]
 
 ROOT_URLCONF = 'web_service.web_service.urls'
@@ -151,7 +152,7 @@ USE_TZ = True
 ## CRISPY TEMPLATE PACK FOR DASH_PLOTLY BOOTSTRAP
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-## ROUTING SETTINGD
+## ROUTING SETTINGS
 ASGI_APPLICATION = 'web_service.web_service.routing.application'
 
 
@@ -171,11 +172,11 @@ STATICFILES_FINDERS = [
 
 ## PLOTY COMPONENT SETTINGS
 PLOTLY_COMPONENTS = [
-    'dash_core_components',
-    'dash_html_components',
+    
     'dash_renderer',
-
-    'dpd_components'
+    'dpd_components',
+    'dash_bootstrap_components',
+    'dpd_static_support',
 ]
 
 

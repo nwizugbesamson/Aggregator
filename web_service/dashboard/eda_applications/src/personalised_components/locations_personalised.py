@@ -20,11 +20,10 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
     )
     def update_top_locations(selected_country: str, selected_job_field: str) -> html.Div:
         if selected_country is not None and selected_job_field is not None:
-            # dataframe  = data.query(f'{DataSchema.COUNTRY} == selected_country & {DataSchema.JOB_FIELD} == selected_job_field')
             dataframe  = data[(data[DataSchema.COUNTRY] == selected_country) & (data[DataSchema.JOB_FIELD] == selected_job_field)]
             if dataframe.shape[0] == 0:
                 return html.Div('Select Country And Job Field.')
-            location_df = dataframe.groupby(by=['country', 'job_field', 'clean_location'], as_index=False).size()
+            location_df = dataframe.groupby(by=[ 'clean_location'], as_index=False).size()
             top_locations = location_df[~location_df['clean_location'].isin(['remote', 'hybrid'])].sort_values(by='size', ascending=False)[:5]
 
             location_fig = px.bar(top_locations,
@@ -33,7 +32,7 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
                     'clean_location': 'Location',
                     'size': 'Number of Job Listings'
             },
-            title=f'Locations With Highest employment offers within {selected_country} in the {selected_job_field} field',
+            title=f'High Employment Location',
             template='simple_white')
             return html.Div(
                 dcc.Graph(          

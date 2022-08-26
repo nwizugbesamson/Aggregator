@@ -3,9 +3,24 @@
 
 
 {% block content %}
+
+<div class="d-sm-flex align-items-left justify-content-between mb-4">
+    <p class="h3 mb-0 text-gray-800"><b>Aggregator</b> aims at helping experienced developers from africa gain
+         insight into employment trends within select countries.
+        </p>
+    
+</div>
+
+<div class="d-sm-flex align-items-left justify-content-between mb-4">
+    <p class="p mb-0 text-gray-600">the data for this analysis is actively gathered and updated from the indeed job listing website.</p>
+    
+</div>
+
 {% load plotly_dash %}
     <div class="{% plotly_class name='general_dashboard' %} card">
-        {% plotly_app name='general_dashboard' ratio=0.65%}
+       {%plotly_header %}
+        {% plotly_direct name='general_dashboard'  %}
+        {%plotly_footer %}
     </div>
-
-{% endblock content%}
+    
+{% endblock content%}   

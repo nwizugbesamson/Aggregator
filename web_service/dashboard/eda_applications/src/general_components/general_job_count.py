@@ -32,8 +32,14 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
                                         DataSchema.COMPANY_NAME: "Number of Available offers",
                                         DataSchema.JOB_FIELD: "Job Fields"
                                     },
-                            title=f"Job offers Recorded on Indeed"
+                            title=f"Job offers Recorded on Indeed",
+                            
+
                             )
+        country_field.update_layout(legend=dict(
+    
+    x=1.02
+), legend_title='')
 
         return html.Div(
             dcc.Graph(          

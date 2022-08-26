@@ -1,8 +1,8 @@
 from Scraper.indeedupdates.update import update_main
 from database.dbclass import JobDatabase
 from web_service import manage
-from creds.creds import READ_ONLY_USER, READ_ONLY_PASSWORD
-from eda_aplications.dash_main import dash_main
+
+
 
 
 

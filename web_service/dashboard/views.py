@@ -7,4 +7,4 @@ def home_page(request):
 
 
 def personalised_page(request):
-    return render(request, 'dashboard/personalised.html')
+    return render(request, 'dashboard/personalised.html', context={'title': 'Insights'})

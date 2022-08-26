@@ -1,11 +1,9 @@
-import plotly.express as px
 import pandas as pd
+import plotly.express as px
 from dash import  html, dcc
 from django_plotly_dash import DjangoDash
 from dash.dependencies import Input, Output
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
-from Analysis.process_funcs import  slice_dataframe, extract_keyword_degree
+from Analysis.process_funcs import   extract_keyword_degree
 
 
 from web_service.dashboard.eda_applications.src.data.loader import DataSchema
@@ -26,40 +24,25 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
         if selected_country is not None and selected_job_field is not None:
             dataframe  = data[data[DataSchema.JOB_FIELD] == selected_job_field]
             if dataframe.shape[0] == 0:
-                return html.Div('Select Job Field.')
+                return html.Div('')
             
+            freq_words_general = extract_keyword_degree(data, 8)
+            Word, Degree_of_importance = zip(*sorted(freq_words_general.items(), key=lambda item: item[1],))
+            degree_df = pd.DataFrame({
+                'Word': Word,
+                'Frequency': Degree_of_importance
+            })
+            word_fig = px.bar(degree_df, y='Word', x='Frequency',
+                     template='simple_white', title='Keywords in Job Descriptions', 
+                    )
 
-            fig = make_subplots(rows=2, cols=2, shared_xaxes=True, vertical_spacing=0.085, horizontal_spacing=0.12)
-            for i, country in enumerate(data['country'].unique()[:2]):
-                temp_data = slice_dataframe(data, country=country, job_field='ui ux designer')
-                freq_words_general = extract_keyword_degree(temp_data, 8)
-                Word, Degree_of_importance = zip(*sorted(freq_words_general.items(), key=lambda item: item[1],))
-                plot_max = max(Degree_of_importance) + 500
-                fig.add_trace(
-                go.Bar(y=Word, x=Degree_of_importance, orientation='h', showlegend=False),
-                row=1, col=i+1
-
-            )
-                fig.update_xaxes(title_text=country, row=1, col=i+1)
-            for i, country in enumerate(data['country'].unique()[2:]):
-                temp_data = slice_dataframe(data, country=country, job_field='ui ux designer')
-                freq_words_general = extract_keyword_degree(temp_data, 8)
-                Word, Degree_of_importance = zip(*sorted(freq_words_general.items(), key=lambda item: item[1],))
-                plot_max = max(Degree_of_importance) + 500
-                fig.add_trace(
-                go.Bar(y=Word, x=Degree_of_importance, orientation='h', showlegend=False),
-                row=2, col=i+1)
-                fig.update_xaxes(title_text=country, row=2, col=i+1)
-
-            fig.update_layout(height=600, width=800, template='simple_white', title_text=f"Important Key Phrases in {selected_job_field} Job Description Listings")
-
-
-
-        
+            # word_fig.update_traces( textposition='inside')
+            # word_fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
+            # word_fig.update_yaxes(showticklabels=False, ticks='')
 
         return html.Div(
             dcc.Graph(          
-                    figure=fig
+                    figure=word_fig
                     ),
             id=p_ids.P_DESCRIPTION,
             

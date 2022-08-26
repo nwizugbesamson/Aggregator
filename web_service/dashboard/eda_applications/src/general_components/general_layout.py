@@ -1,4 +1,5 @@
 from dash import html
+import dash_bootstrap_components as dbc
 from django_plotly_dash import DjangoDash
 import pandas as pd
 from web_service.dashboard.eda_applications.src.general_components import (
@@ -17,6 +18,7 @@ def create_general_layout(app: DjangoDash, data: pd.DataFrame) ->  html.Div:
         className='',   # class name to add styling
         children=[
               
+            ## DROPDOWNS ##
             html.Div(
                 className= '',   #for styling
                 children=[
@@ -25,18 +27,35 @@ def create_general_layout(app: DjangoDash, data: pd.DataFrame) ->  html.Div:
                         
                 ]
             ),
-            general_job_count.render(app, data),
-            html.Hr(),
-            html.Br(),
-            general_salary.render(app, data),
-            html.Hr(),
+
+
+            ## first row  ##
+            dbc.Row([
+                dbc.Col(
+                         general_job_count.render(app, data),
+                         width=12, lg={'size':6}
+                        ),
+           
+                dbc.Col(
+                        general_salary.render(app, data),
+                         width=12, lg={'size':6}
+                    ),
+            ]),
+        
             html.Br(),
             general_location.render(app, data),
-            html.Hr(),
-            html.Br(),
+            
+            # second_row
+            dbc.Row([
+                dbc.Col(
             general_job_type.render(app, data),
-            html.Hr(),
-            html.Br(),
-            general_rating.render(app, data)
+                         width=12, lg={'size':6}
+                        ),
+           
+                dbc.Col(
+            general_rating.render(app, data),
+                         width=12, lg={'size':6}
+                        )
+            ])
         ],
     )

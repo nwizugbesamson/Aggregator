@@ -29,11 +29,11 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
                         color=DataSchema.LOCATION_GROUP, barmode='group',
                         template='simple_white',
                          labels={
-                                    DataSchema.COUNTRY: "country",
+                                    DataSchema.COUNTRY: "country",  
                                     "size": "Job Location",
                                     DataSchema.JOB_FIELD: "Fields"
                                 },
-                        title="Work Location of Recorded Indeed Offerings In Countries Selected"
+                        title="Work Locations In Countries Selected"
                         )
 
         return html.Div(

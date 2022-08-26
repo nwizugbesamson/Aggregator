@@ -22,18 +22,21 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
         if selected_country is not None and selected_job_field is not None:
             dataframe  = data[(data[DataSchema.COUNTRY] == selected_country) & (data[DataSchema.JOB_FIELD] == selected_job_field)]
             if dataframe.shape[0] == 0:
-                return html.Div('Select Country And Job Field.')
-            company_df = data.groupby(by=['country', 'job_field', 'company_name'], as_index=False).size()
-            top_companies = company_df.sort_values(by='size', ascending=False)[:5]
+                return html.Div('')
+            company_df = dataframe.groupby(by=[ 'company_name'], as_index=False).size().sort_values(by='size', ascending=False)[:5]
 
-            company_fig = px.bar(top_companies,
-                                    x='company_name', y='size', 
+            company_fig = px.bar(company_df,
+                                    y='company_name', x='size', 
                                     labels={
                                             'company_name': 'Name of Comany',
-                                            'number_of_offers': 'Number of Job Listings'
+                                            'size': 'Number of Job Listings'
                                     },
-                                    title=f'Major hiring companies within {selected_country} in the {selected_job_field} field',
+                                    text='company_name',
+                                    title=f'Major hiring companies',
                                     template='simple_white')
+            company_fig.update_traces( textposition='auto')
+            company_fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
+            company_fig.update_yaxes(showticklabels=False, ticks='', categoryorder='total ascending' )
             return html.Div(
                 dcc.Graph(          
                         figure=company_fig
