@@ -22,3 +22,4 @@ venv.bak/
 creds/
 creds
 .vscode/
+data/

@@ -1,6 +1,6 @@
 import psycopg2
 from psycopg2.extensions import AsIs
-from creds.creds  import PASSWORD, USER, DATABASE_NAME, HOST,  PORT, SCHEMA_NAME
+from .env import PASSWORD, USER, DATABASE_NAME, HOST,  PORT, SCHEMA_NAME
 
 class JobDatabase:
     """Setup class for database initialization
@@ -28,12 +28,12 @@ class JobDatabase:
     
 
     # database created in command line
-    # @connect_pg
-    # def create_database(self, _cursor):
-    #     create_database = """
-    #     CREATE DATABASE %s;
-    #     """
-    #     _cursor.execute(create_database, (DATABASE_NAME,))
+    @connect_pg
+    def create_database(self, _cursor):
+        create_database = """
+        CREATE DATABASE %s;
+        """
+        _cursor.execute(create_database, (AsIs(DATABASE_NAME),))
 
     @connect_pg
     def create_schema(self, _cursor):

@@ -2,7 +2,7 @@ from datetime import date
 import psycopg2 as pg
 import pandas as pd
 import numpy as np
-from creds.creds import READ_ONLY_USER, READ_ONLY_PASSWORD, HOST, PORT, DATABASE_NAME
+from .env import READ_ONLY_USER, READ_ONLY_PASSWORD, HOST, PORT, DATABASE_NAME
 
 
 class DataSchema:

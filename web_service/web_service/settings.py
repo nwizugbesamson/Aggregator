@@ -1,4 +1,4 @@
-from creds.creds import USER, PASSWORD, HOST, PORT, DATABASE_NAME
+
 
 """
 Django settings for web_service project.
@@ -26,12 +26,14 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3e6*hk*vl-r0=i^oqf5_$2_e8wz)8l!94!xjo@0)&luu!q=sj3'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = str(os.environ.get('DEBUG')) == '1'
 
 ALLOWED_HOSTS = []
+if not DEBUG:
+    ALLOWED_HOSTS.append(os.environ.get('ALLOWED_HOST'))
 
 # ENABLE FRAMES WITHIN HTML FOR DJANGO-PLOTLY-DASH
 X_FRAME_OPTIONS = 'SAMEORIGIN'
@@ -72,6 +74,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_plotly_dash.middleware.BaseMiddleware',
 ]
@@ -106,16 +109,31 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': DATABASE_NAME,
-        'USER': USER,
-        'PASSWORD': PASSWORD,
-        'HOST': HOST,
-        'PORT': PORT
+POSTGRES_DB = os.environ.get('DATABASE_NAME')
+POSTGRES_HOST = os.environ.get('POSTGRES_HOST')
+POSTGRES_USER = os.environ.get('POSTGRES_USER')
+POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD')
+POSTGRST_PORT = os.environ.get('POSTGRST_PORT')
+
+DB_IS_AVAIL = all([
+        POSTGRES_DB,
+        POSTGRES_HOST,
+        POSTGRES_USER,
+        POSTGRES_PASSWORD,
+        POSTGRST_PORT,
+])
+
+if DB_IS_AVAIL:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DATABASE_NAME'),
+            'USER': os.environ.get('POSTGRES_USER'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get('POSTGRES_PORT')
+        }
     }
-}
 
 
 # Password validation
