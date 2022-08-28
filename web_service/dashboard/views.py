@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from web_service.dashboard.eda_applications import dash_main
+from dashboard.eda_applications import dash_main
 
 # Create your views here.
 def home_page(request):

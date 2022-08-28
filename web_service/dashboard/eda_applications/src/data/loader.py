@@ -1,8 +1,15 @@
-from datetime import date
+import os
 import psycopg2 as pg
 import pandas as pd
 import numpy as np
-from .env import READ_ONLY_USER, READ_ONLY_PASSWORD, HOST, PORT, DATABASE_NAME
+
+
+
+READ_ONLY_USER = os.environ.get('READ_ONLY_USER')
+READ_ONLY_PASSWORD = os.environ.get('READ_ONLY_PASSWORD')
+POSTGRES_HOST = os.environ.get('POSTGRES_HOST')
+POSTGRES_PORT = os.environ.get('POSTGRES_PORT')
+DATABASE_NAME = os.environ.get('DATABASE_NAME')
 
 
 class DataSchema:
@@ -28,7 +35,7 @@ class DataSchema:
 
 
 def load_data():
-    with pg.connect(user=READ_ONLY_USER, password=READ_ONLY_PASSWORD, host=HOST, port=PORT, database=DATABASE_NAME) as conn:
+    with pg.connect(user=READ_ONLY_USER, password=READ_ONLY_PASSWORD, host=POSTGRES_HOST, port=POSTGRES_PORT, database=DATABASE_NAME) as conn:
         data = pd.read_sql('SELECT * FROM public.indeedjobs;', conn, parse_dates=[DataSchema.POST_DATE])
         data = data.replace({'': np.nan, None: np.nan})
     return data

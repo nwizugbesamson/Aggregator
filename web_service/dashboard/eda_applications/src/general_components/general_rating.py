@@ -5,8 +5,8 @@ from dash.dependencies import Input, Output
 import plotly.figure_factory as ff
 
 
-from web_service.dashboard.eda_applications.src.data.loader import DataSchema
-from web_service.dashboard.eda_applications.src.general_components import ids
+from dashboard.eda_applications.src.data.loader import DataSchema
+from dashboard.eda_applications.src.general_components import ids
 
 
 

@@ -5,8 +5,8 @@ from dash import html, dcc
 from dash.dependencies import Input, Output
 
 
-from web_service.dashboard.eda_applications.src.data.loader import DataSchema
-from web_service.dashboard.eda_applications.src.general_components import ids
+from dashboard.eda_applications.src.data.loader import DataSchema
+from dashboard.eda_applications.src.general_components import ids
 
 
 

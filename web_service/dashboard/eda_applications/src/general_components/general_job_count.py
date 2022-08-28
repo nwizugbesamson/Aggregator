@@ -5,8 +5,8 @@ from dash import html, dcc
 from dash.dependencies import Input, Output
 
 
-from web_service.dashboard.eda_applications.src.data.loader import DataSchema
-from web_service.dashboard.eda_applications.src.general_components import ids
+from dashboard.eda_applications.src.data.loader import DataSchema
+from dashboard.eda_applications.src.general_components import ids
 
 
 
@@ -36,10 +36,7 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
                             
 
                             )
-        country_field.update_layout(legend=dict(
-    
-    x=1.02
-), legend_title='')
+        country_field.update_layout(legend=dict(x=1.02), legend_title='')
 
         return html.Div(
             dcc.Graph(          

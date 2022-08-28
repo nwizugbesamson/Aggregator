@@ -1,8 +1,8 @@
 from dash import html, dcc
 from django_plotly_dash import DjangoDash
 import pandas as pd
-from web_service.dashboard.eda_applications.src.data.loader import DataSchema
-from web_service.dashboard.eda_applications.src.general_components import ids
+from dashboard.eda_applications.src.data.loader import DataSchema
+from dashboard.eda_applications.src.general_components import ids
 from dash.dependencies import Input, Output
 
 
@@ -28,7 +28,7 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
             ),
             html.Button(
                 id=ids.SELECT_ALL_COUNTRIES_BUTTON,
-                className="", # styling
+                className="", # class name to apply style
                 children=['All Countries']
             )
         ],

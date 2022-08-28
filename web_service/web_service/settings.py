@@ -17,7 +17,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 
@@ -29,7 +29,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = str(os.environ.get('DEBUG')) == '1'
+DEBUG = True #str(os.environ.get('DEBUG')) == '1'
 
 ALLOWED_HOSTS = []
 if not DEBUG:
@@ -42,7 +42,7 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 # Application definition
 
 INSTALLED_APPS = [
-    'web_service.dashboard.apps.DashboardConfig',
+    'dashboard.apps.DashboardConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -79,12 +79,12 @@ MIDDLEWARE = [
     'django_plotly_dash.middleware.BaseMiddleware',
 ]
 
-ROOT_URLCONF = 'web_service.web_service.urls'
+ROOT_URLCONF = 'web_service.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(PROJECT_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -113,25 +113,26 @@ POSTGRES_DB = os.environ.get('DATABASE_NAME')
 POSTGRES_HOST = os.environ.get('POSTGRES_HOST')
 POSTGRES_USER = os.environ.get('POSTGRES_USER')
 POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD')
-POSTGRST_PORT = os.environ.get('POSTGRST_PORT')
+POSTGRES_PORT = os.environ.get('POSTGRES_PORT')
+
 
 DB_IS_AVAIL = all([
         POSTGRES_DB,
         POSTGRES_HOST,
         POSTGRES_USER,
         POSTGRES_PASSWORD,
-        POSTGRST_PORT,
+        POSTGRES_PORT
 ])
 
 if DB_IS_AVAIL:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DATABASE_NAME'),
-            'USER': os.environ.get('POSTGRES_USER'),
-            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-            'HOST': os.environ.get('POSTGRES_HOST'),
-            'PORT': os.environ.get('POSTGRES_PORT')
+            'NAME': POSTGRES_DB,
+            'USER': POSTGRES_USER,
+            'PASSWORD': POSTGRES_PASSWORD,
+            'HOST': POSTGRES_HOST,
+            'PORT': POSTGRES_PORT
         }
     }
 
@@ -171,7 +172,7 @@ USE_TZ = True
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 ## ROUTING SETTINGS
-ASGI_APPLICATION = 'web_service.web_service.routing.application'
+ASGI_APPLICATION = 'web_service.routing.application'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -199,17 +200,12 @@ PLOTLY_COMPONENTS = [
 
 
 
-STATICFILES_DIRS = [os.path.join(PROJECT_DIR, 'static'),]
-BASE_DIR = os.path.dirname(PROJECT_DIR)
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+    ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles-cdn')
 STATIC_URL = '/static/'
-# STATICFILES_LOCATION = 'web_service/static'
-# STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles-cdn')     #prod collect static
-# # STATIC_ROOT = 'web_service/static'  #dev collect static
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static')
-# ]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

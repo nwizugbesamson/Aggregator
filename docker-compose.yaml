@@ -4,7 +4,7 @@ services:
     depends_on:
       - 172.24.213.125
     build: 
-      context: .
+      context: ./web_service
       dockerfile: Dockerfile
     image: aggregator:v1
     restart: always
@@ -14,13 +14,17 @@ services:
       .env
     ports:
       - '8000:8000'
-    command: sh -c 'chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh'
+    command: sh -c 'chmod +x /app/migrate.sh && sh /app/migrate.sh && sh /app/entrypoint.sh'
+    volumes:
+       - staticfiles:/app/static/
   172.24.213.125:
     image: postgres
     expose:
       - 5432
     env_file:
       - .env
+    ports:
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -28,4 +32,6 @@ services:
 
 
 volumes:
+  staticfiles:
+    external: true
   postgres_data:

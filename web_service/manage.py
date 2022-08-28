@@ -11,7 +11,7 @@ def main():
     DOT_ENV_PATH = pathlib.Path() / '.env'
     if DOT_ENV_PATH.exists():
         dotenv.read_dotenv(str(DOT_ENV_PATH))
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web_service.web_service.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web_service.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -23,5 +23,5 @@ def main():
     execute_from_command_line(sys.argv)
 
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()

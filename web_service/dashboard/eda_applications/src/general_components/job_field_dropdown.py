@@ -2,10 +2,8 @@ from dash import html, dcc
 from django_plotly_dash import DjangoDash
 from dash.dependencies import Input, Output
 import pandas as pd
-from web_service.dashboard.eda_applications.src.data.loader import DataSchema
-from web_service.dashboard.eda_applications.src.general_components import ids
-
-
+from dashboard.eda_applications.src.data.loader import DataSchema
+from dashboard.eda_applications.src.general_components import ids
 
 def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
     all_fields = list(data[DataSchema.JOB_FIELD].unique())
