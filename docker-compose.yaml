@@ -2,36 +2,39 @@ version: '3.9'
 services:
   web_service:
     depends_on:
-      - 172.24.213.125
+      - agg-db
     build: 
-      context: ./web_service
+      context: ./web_service/
       dockerfile: Dockerfile
-    image: aggregator:v1
-    restart: always
+    image: aggregator:v0
     environment:
       - PORT=8000
     env_file:
-      .env
+      - web_service/.env
     ports:
       - '8000:8000'
-    command: sh -c 'chmod +x /app/migrate.sh && sh /app/migrate.sh && sh /app/entrypoint.sh'
-    volumes:
-       - staticfiles:/app/static/
-  172.24.213.125:
+    command: sh -c 'chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh'
+    # volumes:
+    #   - static/:/app/static/
+  agg-db:
     image: postgres
     expose:
-      - 5432
-    env_file:
-      - .env
+      - 5433
+    restart: always
     ports:
-      - "5432:5432"
+      - '5433:5433'
+    command: -p 5433
+    env_file:
+      - web_service/.env
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./populatedb.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./eda_cleaned.csv:/docker-entrypoint-initdb.d/eda_cleaned.csv
 
     
-
-
 volumes:
-  staticfiles:
-    external: true
+#   # static:
+#   #   external: true
   postgres_data:
+  populatedb.sql:
+  eda_cleaned.csv:
