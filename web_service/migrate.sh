@@ -1,11 +1,11 @@
 #!/bin/bash
 ## SET SUPERUSER EMAIL
-SUPERUSER_EMAIL = ${DJANGO_SUPERUSER_EMAIL:-'none'}
+export SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL:-'none'}
 
 cd /app/
 ## MIGRATE DATABASE
-/opt/venv/bin/python main.py migrate
+/opt/venv/bin/python manage.py migrate --noinput
 
 
 ## CREATE DJANGOSUPERUSER
-/opt/venv/bin/python main createsuperuser --email $SUPERUSER_EMAIL --noinput || true
+/opt/venv/bin/python manage.py createsuperuser --email $SUPERUSER_EMAIL --noinput || true

@@ -1,5 +1,5 @@
 ## data gathered
-# *.csv
+*.csv
 
 ## credentials
 creds.py/
@@ -10,7 +10,7 @@ Tests/
 __pycache__/
 
 
-
+.kube/
 ## environment variables
 .env
 .venv
@@ -23,3 +23,4 @@ creds/
 creds
 .vscode/
 data/
+*.sql

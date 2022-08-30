@@ -5,7 +5,7 @@ import numpy as np
 
 
 
-READ_ONLY_USER = os.environ.get('READ_ONLY_USER')
+READ_ONLY_USER = os.environ.get('POSTGRES_USER')
 READ_ONLY_PASSWORD = os.environ.get('READ_ONLY_PASSWORD')
 POSTGRES_HOST = os.environ.get('POSTGRES_HOST')
 POSTGRES_PORT = os.environ.get('POSTGRES_PORT')
@@ -35,7 +35,9 @@ class DataSchema:
 
 
 def load_data():
+    print('ABOUT TO CONNECT TO DATBASE!!!!!!!!!!!!')
     with pg.connect(user=READ_ONLY_USER, password=READ_ONLY_PASSWORD, host=POSTGRES_HOST, port=POSTGRES_PORT, database=DATABASE_NAME) as conn:
-        data = pd.read_sql('SELECT * FROM public.indeedjobs;', conn, parse_dates=[DataSchema.POST_DATE])
+        print('DATBASE CONNECTION SUCCESSFUL!!!!!!!!!!!!')
+        data = pd.read_sql('SELECT * FROM indeedjobs;', conn, parse_dates=[DataSchema.POST_DATE])
         data = data.replace({'': np.nan, None: np.nan})
     return data
