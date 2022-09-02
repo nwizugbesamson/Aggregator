@@ -1,7 +1,4 @@
 import pandas as pd
-import nltk
-nltk.download('stopwords')
-nltk.download('punkt')
 from nltk.corpus import stopwords
 from rake_nltk import Rake
 from string import punctuation

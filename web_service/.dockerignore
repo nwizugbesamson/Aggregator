@@ -15,7 +15,10 @@ __pycache__/
 ## database init
 database/
 
-
+.git/
+.gitignore/
+.git
+.gitignore
 ## environment variables
 
 .venv

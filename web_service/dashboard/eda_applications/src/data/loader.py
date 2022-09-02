@@ -1,7 +1,10 @@
 import os
-import psycopg2 as pg
+# import psycopg2 as pg
+import sqlalchemy
 import pandas as pd
 import numpy as np
+
+
 
 
 
@@ -9,7 +12,7 @@ READ_ONLY_USER = os.environ.get('POSTGRES_USER')
 READ_ONLY_PASSWORD = os.environ.get('READ_ONLY_PASSWORD')
 POSTGRES_HOST = os.environ.get('POSTGRES_HOST')
 POSTGRES_PORT = os.environ.get('POSTGRES_PORT')
-DATABASE_NAME = os.environ.get('DATABASE_NAME')
+POSTGRES_DB = os.environ.get('POSTGRES_DB')
 
 
 class DataSchema:
@@ -31,13 +34,16 @@ class DataSchema:
     WEEKDAY: str = 'day_of_week'
 
     
-
+# def load_data():
+#     with pg.connect(user=READ_ONLY_USER, password=READ_ONLY_PASSWORD, host=POSTGRES_HOST, port=POSTGRES_PORT, database=POSTGRES_DB) as conn:
+#         data = pd.read_sql('SELECT * FROM indeedjobs;', conn, parse_dates=[DataSchema.POST_DATE])
+#         data = data.replace({'': np.nan, None: np.nan})
+#     return data
 
 
 def load_data():
-    print('ABOUT TO CONNECT TO DATBASE!!!!!!!!!!!!')
-    with pg.connect(user=READ_ONLY_USER, password=READ_ONLY_PASSWORD, host=POSTGRES_HOST, port=POSTGRES_PORT, database=DATABASE_NAME) as conn:
-        print('DATBASE CONNECTION SUCCESSFUL!!!!!!!!!!!!')
-        data = pd.read_sql('SELECT * FROM indeedjobs;', conn, parse_dates=[DataSchema.POST_DATE])
+    engine = sqlalchemy.create_engine(f'postgresql://{READ_ONLY_USER}:{READ_ONLY_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}')
+    with engine.connect() as conn:
+        data = pd.read_sql('SELECT * FROM public.indeedjobs;', conn, parse_dates=[DataSchema.POST_DATE])
         data = data.replace({'': np.nan, None: np.nan})
     return data

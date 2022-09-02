@@ -29,11 +29,18 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True #str(os.environ.get('DEBUG')) == '1'
+DEBUG = bool(int(os.environ.get('DEBUG', '0')))
 
 ALLOWED_HOSTS = []
+# if not DEBUG:
+#     ALLOWED_HOSTS.extend(
+#     filter(
+#         None,
+#         os.environ.get('ALLOWED_HOSTS', '').split(','),
+#     )
+# )
 if not DEBUG:
-    ALLOWED_HOSTS.append(os.environ.get('ALLOWED_HOST'))
+   ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1").split()
 
 # ENABLE FRAMES WITHIN HTML FOR DJANGO-PLOTLY-DASH
 X_FRAME_OPTIONS = 'SAMEORIGIN'
@@ -109,7 +116,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }"""
-POSTGRES_DB = os.environ.get('DATABASE_NAME')
+POSTGRES_DB = os.environ.get('POSTGRES_DB')
 POSTGRES_HOST = os.environ.get('POSTGRES_HOST')
 POSTGRES_USER = os.environ.get('POSTGRES_USER')
 POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD')
@@ -203,7 +210,10 @@ PLOTLY_COMPONENTS = [
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
     ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles-cdn')
+
+
+STATIC_ROOT_PATH = os.environ.get('STATIC_ROOT_PATH')
+STATIC_ROOT = os.path.join(BASE_DIR, STATIC_ROOT_PATH)
 STATIC_URL = '/static/'
 
 
