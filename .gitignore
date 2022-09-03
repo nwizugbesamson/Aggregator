@@ -26,7 +26,6 @@ data/
 *.sql
 
 
-.env_prod
-.env_prod/
+
 .env_local
 .env_local/
