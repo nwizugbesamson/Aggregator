@@ -6,12 +6,16 @@ export SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD}
 
 cd /app/
 
+
+
 ## CHECK IF DB IS AVAILABLE BEFORE CONNECTION OR MIGRATION
 ## MIGRATE DATABASE
 /opt/venv/bin/python manage.py wait_for_db
-/opt/venv/bin/python manage.py collectstatic --noinput
+
 /opt/venv/bin/python manage.py makemigrations 
 /opt/venv/bin/python manage.py migrate --noinput
+/opt/venv/bin/python manage.py collectstatic --noinput
+
 
 
 

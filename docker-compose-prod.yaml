@@ -9,7 +9,6 @@ services:
     image: aggregator:v1
     env_file:
       - web_service/.env
-    restart: always
     volumes:
       - static_data:/app/vol/web/static/
     command: >
