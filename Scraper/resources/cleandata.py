@@ -59,3 +59,6 @@ class CleanData:
         result = 'internship' if 'temp to perm'in result else result
         result =  result.replace('/ co-op', '').strip()
         return result
+
+
+    

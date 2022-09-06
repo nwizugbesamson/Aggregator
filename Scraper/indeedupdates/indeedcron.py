@@ -61,6 +61,8 @@ def calculate_avg_salary(row):
     return row
 
 
+
+
 ## process clean location
 def clean_location(value: str):
     value = value.lower()
@@ -70,6 +72,8 @@ def clean_location(value: str):
         return 'remote'
     value = re.sub(r'[^a-zA-Z,]', ' ',value)
     value = value.replace('locations', '').strip()
+    if len(value.split(',')) > 1:
+        value = ', '.join([value.split(',')[0].strip(), value.split(',')[1].split()[0]])
     return value
 
 def group_location(value):
@@ -77,11 +81,15 @@ def group_location(value):
         return value
     return 'physical location'
 
-def preprocess_data(read_path, write_path):
+
+
+
+
+def preprocess_data(data:dict) -> pd.DataFrame:
 
     ## load dataframe
     coltypes = {'salary': str}
-    data: pd.DataFrame = pd.read_csv(read_path, dtype=coltypes, na_values=['Null'], parse_dates=['post_date'], index_col=False)
+    data: pd.DataFrame = pd.DataFrame(data, dtype=coltypes, na_values=['Null'], parse_dates=['post_date'], index_col=False)
 
 
     ##   DROP Unnamed: 0
@@ -111,5 +119,5 @@ def preprocess_data(read_path, write_path):
 
     data = data.apply(calculate_avg_salary, axis=1)
 
-    data.to_csv(write_path, index=False)
+    return data
 

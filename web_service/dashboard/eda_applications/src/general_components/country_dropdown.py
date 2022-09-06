@@ -17,7 +17,6 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
     def select_all_nations(_: int) -> list[str]:
         return all_countries
     return html.Div(
-        className= '',  # class name to apply style
         children= [
             html.H6('Country'),
             dcc.Dropdown(
@@ -28,7 +27,6 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
             ),
             html.Button(
                 id=ids.SELECT_ALL_COUNTRIES_BUTTON,
-                className="", # class name to apply style
                 children=['All Countries']
             )
         ],

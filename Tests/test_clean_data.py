@@ -106,6 +106,9 @@ class CleanDataTest(unittest.TestCase):
             self.clean_data.clean_job_type(job_types[5]), 'temporary'
         )
 # TODO 1. TEST CLEAN LOCATION
+# ['remote', 'melbourne vic', 'brisbane qld 4000', ...,
+#        'san diego, ca 92110', 'oakland, ca 94607  downtown area ',
+#        'gastonia, nc 28056']
 
 if __name__ == "__main__":
     unittest.main()

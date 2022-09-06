@@ -2,7 +2,7 @@
 \set sch_name `echo $SCHEMA_NAME`
 CREATE SCHEMA :sch_name;
 CREATE TYPE country_enum AS ENUM(
-                    'AUSTRALIA',
+                    'Australia',
                     'USA',
                     'Canada', 
                     'United Kingdom'

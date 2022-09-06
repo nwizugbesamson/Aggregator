@@ -49,7 +49,7 @@ class JobDatabase:
         """create enum types for indeedjobs"""
         country_enum = """
                 CREATE TYPE country_enum AS ENUM(
-                    'AUSTRALIA',
+                    'Australia',
                     'USA',
                     'Canada', 
                     'United Kingdom'

@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'django_plotly_dash.apps.DjangoPlotlyDashConfig',
     'channels',
     'channels_redis',
+    'django_crontab'
     
 ]
 
@@ -104,7 +105,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'web_service.web_service.wsgi.application'
+WSGI_APPLICATION = 'web_service.wsgi.application'
 
 
 # Database
@@ -160,6 +161,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+]
+
+
+
+
+## cron job settings
+CRONJOBS = [
+    ('* 2 * * *', 'django.core.management.call_command', ['update_db']),
+    ('30 2 * * *', 'django.core.management.call_command', ['delete_duplicate']),
 ]
 
 

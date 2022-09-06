@@ -21,6 +21,7 @@ env.bak/
 venv.bak/
 creds/
 creds
+cred.py
 .vscode/
 data/
 

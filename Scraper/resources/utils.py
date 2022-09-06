@@ -1,7 +1,7 @@
 
 UNDEFINED_LIST = ['$', '£', 'shift', 'Monday to Friday']
 
-COUNTRY_CURRENCY_CONVERSION = {'Canada': 0.7827, 'AUSTRALIA': 0.712665, 'United Kingdom': 1.214175}
+COUNTRY_CURRENCY_CONVERSION = {'Canada': 0.7827, 'Australia': 0.712665, 'United Kingdom': 1.214175}
 
 
 

@@ -19,6 +19,7 @@ RUN apt-get update && \
     apt-get install -y netcat-openbsd && \
     apt-get install -y libxml2-dev libxslt1-dev python-dev libpython3-dev \
         libpcre3 libpcre3-dev  uwsgi-plugin-python3 python3-all-dev && \
+    apt-get install -y install cron &&\
     apt-get install -y gcc  python3-setuptools  &&\
     /opt/venv/bin/pip install -U pip &&\
     /opt/venv/bin/pip cache purge &&\
@@ -33,7 +34,8 @@ RUN apt-get update && \
     # chown -R samson:samson /app/vol/web/static && \
     chmod -R 755 /app/vol/web/static && \
     # chown -R samson:samson /opt/venv/lib/python3.10/site-packages/django_plotly_dash/migrations/ &&\
-    chmod -R 777 /opt/venv/lib/python3.10/site-packages/django_plotly_dash/migrations/ 
+    chmod -R 777 /opt/venv/lib/python3.10/site-packages/django_plotly_dash/migrations/ &&\
+    touch /var/log/cron.log
     
 # copy all files into docker directory app
 COPY . /app

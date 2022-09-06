@@ -14,7 +14,7 @@ from resources.cleandata import CleanData
 
 def extract_country(url: str) -> str:
     """extract country information from request"""
-    return 'Canada' if 'ca' in url else ('United Kingdom'if 'uk' in url else ('AUSTRALIA' if 'au' in url else 'USA'))
+    return 'Canada' if 'ca' in url else ('United Kingdom'if 'uk' in url else ('Australia' if 'au' in url else 'USA'))
 
 
 data_cleaner = CleanData()
