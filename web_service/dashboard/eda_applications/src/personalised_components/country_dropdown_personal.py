@@ -1,6 +1,6 @@
 from dash import  html, dcc
 import pandas as pd
-from dashboard.eda_applications.src.data.loader import DataSchema
+from dashboard.eda_applications.src.data.loader import DataSchema, count_unique
 from dashboard.eda_applications.src.personalised_components import p_ids
 
 
@@ -14,9 +14,8 @@ def render( data: pd.DataFrame) -> html.Div:
     Returns:
         dash.html.div
     """
-    all_countries = list(data[DataSchema.COUNTRY].unique())
+    all_countries = all_countries = count_unique(DataSchema.COUNTRY, data)
     return html.Div(
-        className= '',  # class name to apply style
         children= [
             html.H6('Country'),
             dcc.Dropdown(

@@ -1,6 +1,6 @@
 from django_plotly_dash import DjangoDash
 import dash_bootstrap_components as dbc
-from dashboard.eda_applications.src.data.loader import load_data, optimize_dtype
+from dashboard.eda_applications.src.data.loader import load_data
 from dashboard.eda_applications.src.general_components.general_layout import create_general_layout
 from dashboard.eda_applications.src.personalised_components.personalised_layout import  create_personalised_layout
 

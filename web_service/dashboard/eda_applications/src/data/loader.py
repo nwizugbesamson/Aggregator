@@ -1,8 +1,10 @@
 import os
+from collections.abc import Iterator
 import psycopg2 as pg
 import pandas as pd
 import numpy as np
 from psycopg2.extensions import AsIs
+from itertools import chain
 
 
 
@@ -47,15 +49,26 @@ data_columns = (
                 )
     
 def load_data():
-    with pg.connect(user=READ_ONLY_USER, password=READ_ONLY_PASSWORD, host=HOST, port=PORT, database=DATABASE_NAME) as conn:
-        data = pd.read_sql_query('SELECT country, job_field, average_salary_usd, company_name, job_description,  job_type, clean_location,  location_group, rating FROM public.indeedjobs;',
-                            conn, 
-                            chunksize=4500,
-                            dtype={
-                                DataSchema.COUNTRY : 'category',
-                                DataSchema.JOB_FIELD : 'category',
-                                DataSchema.JOB_TYPE : 'category',
-                                DataSchema.LOCATION_GROUP : 'category',
-                            }
+    """return generator of pandas dataframe from sql query"""
+    with pg.connect(user=READ_ONLY_USER, password=READ_ONLY_PASSWORD, host=POSTGRES_HOST, port=POSTGRES_PORT, database=POSTGRES_DB) as conn:
+        data = pd.read_sql_query("""
+                                    SELECT country, job_field, average_salary_usd, company_name, 
+                                    job_description,  job_type, clean_location,  location_group, 
+                                    rating FROM public.indeedjobs;""",
+                                    conn, 
+                                    chunksize=4500,
+                                    dtype={
+                                        DataSchema.COUNTRY : 'category',
+                                        DataSchema.JOB_FIELD : 'category',
+                                        DataSchema.JOB_TYPE : 'category',
+                                        DataSchema.LOCATION_GROUP : 'category',
+                                    }
                             )
     return data
+
+
+def count_unique(column:str, data: list[Iterator[pd.DataFrame]]) -> list[str]:
+    """Return Unique words in list of pandas dataframe """
+    res = [df[column].unique() for df in data]
+    return list(set(chain.from_iterable(res)))
+

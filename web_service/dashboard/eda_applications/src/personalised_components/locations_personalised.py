@@ -1,13 +1,39 @@
+from collections.abc import Iterator
+from functools import reduce
 import plotly.express as px
 import pandas as pd
 from dash import  html, dcc
 from django_plotly_dash import DjangoDash
 from dash.dependencies import Input, Output
-
-
 from dashboard.eda_applications.src.data.loader import DataSchema
 from dashboard.eda_applications.src.personalised_components import p_ids
+from dashboard.eda_applications.src.utils.process_funcs import return_subset_single
 
+FILTERED_LOCATIONS = ['remote', 'hybrid']
+
+def group_locations_p(data: Iterator[pd.DataFrame], country: str, job_field : str) -> pd.DataFrame:
+    """Generate Multi index of dataset on count of popular location offers in given country
+
+    Args:
+        data (Iterator[pd.DataFrame]): 
+
+    Returns:
+        pd.DataFrame: 
+    """
+    cols = [DataSchema.COUNTRY, DataSchema.JOB_FIELD, DataSchema.CLEAN_LOCATION]
+    result = [
+                return_subset_single(dt, country , job_field, cols) \
+                .groupby(by=DataSchema.CLEAN_LOCATION, as_index=False)\
+                .size()\
+                for dt in data
+            ]
+    df = pd.DataFrame()
+    df = reduce(
+            lambda x, y: pd.concat([x, y]) , result
+                )  
+    df = df[~df[DataSchema.CLEAN_LOCATION].isin(FILTERED_LOCATIONS)].groupby(by=DataSchema.CLEAN_LOCATION, as_index=False).sum()
+    return df.drop(df[df['size'] == 0].index)\
+           .sort_values(by='size', ascending=False)[:5]
 
 
 def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
@@ -37,13 +63,10 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
            Returns:
                 dash.html.Div"""
         if selected_country is not None and selected_job_field is not None:
-            dataframe  = data[(data[DataSchema.COUNTRY] == selected_country) & (data[DataSchema.JOB_FIELD] == selected_job_field)]
+            dataframe  = group_locations_p(data, selected_country, selected_job_field)
             if dataframe.shape[0] == 0:
-                return html.Div('Select Country And Job Field.')
-            location_df = dataframe.groupby(by=[ 'clean_location'], as_index=False).size()
-            top_locations = location_df[~location_df['clean_location'].isin(['remote', 'hybrid'])].sort_values(by='size', ascending=False)[:5]
-
-            location_fig = px.bar(top_locations,
+                return html.Div('')
+            location_fig = px.bar(dataframe,
             x='clean_location', y='size', 
             labels={
                     'clean_location': 'Location',

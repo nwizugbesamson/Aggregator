@@ -1,16 +1,42 @@
+from collections.abc import Iterator
+from functools import reduce
 import plotly.express as px
 import pandas as pd
 from django_plotly_dash import DjangoDash
 from dash import html, dcc
 from dash.dependencies import Input, Output
-
-
 from dashboard.eda_applications.src.data.loader import DataSchema
 from dashboard.eda_applications.src.personalised_components import p_ids
+from dashboard.eda_applications.src.utils.process_funcs import return_subset_single
 
 
 
-def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
+def group_companies_p(data: Iterator[pd.DataFrame], country: str, job_field : str) -> pd.DataFrame:
+    """Grouped dataset by company name within input country and job field
+
+    Args:
+        data (Iterator[pd.DataFrame]): 
+
+    Returns:
+        pd.DataFrame: 
+    """
+    cols = [DataSchema.COUNTRY, DataSchema.JOB_FIELD, DataSchema.COMPANY_NAME]
+    result = [
+                return_subset_single(dt, country , job_field, cols) \
+                .groupby(by=DataSchema.COMPANY_NAME, as_index=False)\
+                .size().sort_values(by='size', ascending=False)[:5]\
+                for dt in data
+            ]
+    df = pd.DataFrame()
+    df = reduce(
+            lambda x, y: pd.concat([x, y]) , result
+                )  
+    df = df.groupby(by=DataSchema.COMPANY_NAME, as_index=False).sum()
+    return df.drop(df[df['size'] == 0].index)
+
+
+
+def render(app: DjangoDash, data:  Iterator[pd.DataFrame]) -> html.Div:
     """ render dash html div of plotly bar chart
 
         Args:
@@ -37,12 +63,10 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
            Returns:
                 dash.html.Div"""
         if selected_country is not None and selected_job_field is not None:
-            dataframe  = data[(data[DataSchema.COUNTRY] == selected_country) & (data[DataSchema.JOB_FIELD] == selected_job_field)]
+            dataframe  = group_companies_p(data, selected_country, selected_job_field)
             if dataframe.shape[0] == 0:
-                return html.Div('')
-            company_df = dataframe.groupby(by=[ 'company_name'], as_index=False).size().sort_values(by='size', ascending=False)[:5]
-
-            company_fig = px.bar(company_df,
+                return html.Div('Select Country And Job Field.')
+            company_fig = px.bar(dataframe,
                                     y='company_name', x='size', 
                                     labels={
                                             'company_name': 'Name of Comany',

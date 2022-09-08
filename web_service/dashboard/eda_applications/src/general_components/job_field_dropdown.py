@@ -1,12 +1,20 @@
+from collections.abc import Iterator
 from dash import html, dcc
 from django_plotly_dash import DjangoDash
 from dash.dependencies import Input, Output
 import pandas as pd
-from dashboard.eda_applications.src.data.loader import DataSchema
+from dashboard.eda_applications.src.data.loader import DataSchema, count_unique
 from dashboard.eda_applications.src.general_components import ids
 
-def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
-    all_fields = list(data[DataSchema.JOB_FIELD].unique())
+def render(app: DjangoDash, data: list[Iterator[pd.DataFrame]]) -> html.Div:
+    """render Dash dropdown
+    
+    Arg:
+        data (pd.DataFrame) : dataframe object
+    Returns:
+        dash.html.div
+    """
+    all_fields = count_unique(DataSchema.JOB_FIELD, data)
 
     @app.callback(
         Output(ids.JOB_FIELD_DROPDOWN, 'value'),
@@ -16,7 +24,6 @@ def render(app: DjangoDash, data: pd.DataFrame) -> html.Div:
         return all_fields
 
     return html.Div(
-        className='', # styling
         children=[
             html.H6('Job Field'),
             dcc.Dropdown(

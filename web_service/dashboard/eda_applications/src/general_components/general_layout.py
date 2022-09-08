@@ -23,8 +23,7 @@ def create_general_layout(app: DjangoDash, data: pd.DataFrame) ->  html.Div:
                 className= '',   #for styling
                 children=[
                         country_dropdown.render(app, data),
-                        job_field_dropdown.render(app, data),
-                        
+                        job_field_dropdown.render(app, data),   
                 ]
             ),
 
@@ -57,5 +56,5 @@ def create_general_layout(app: DjangoDash, data: pd.DataFrame) ->  html.Div:
                          width=12, lg={'size':6}
                         )
             ])
-        ],
+        ]
     )
